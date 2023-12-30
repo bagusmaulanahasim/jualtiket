@@ -1,0 +1,73 @@
+package com.example.jualtiket;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+public class TicketSalesGUI extends Application {
+
+    private int hargaTiket;
+    private int jumlahTiketTerjual;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Aplikasi Penjualan Tiket");
+
+        // Membuat elemen-elemen GUI
+        Label hargaLabel = new Label("Harga Tiket:");
+        TextField hargaField = new TextField();
+        Label jumlahLabel = new Label("Jumlah Tiket Terjual:");
+        TextField jumlahField = new TextField();
+        Button hitungButton = new Button("Hitung Total Pendapatan");
+        Label hasilLabel = new Label();
+
+        // Menambahkan event handler untuk tombol hitung
+        hitungButton.setOnAction(e -> {
+            try {
+                // Mengambil input dari pengguna dan mengatur nilai variabel
+                hargaTiket = Integer.parseInt(hargaField.getText());
+                jumlahTiketTerjual = Integer.parseInt(jumlahField.getText());
+
+                // Validasi input tidak boleh negatif
+                if (hargaTiket < 0 || jumlahTiketTerjual < 0) {
+                    throw new NumberFormatException();
+                }
+
+                // Menghitung total pendapatan
+                int totalPendapatan = hitungTotalPendapatan();
+
+                // Menampilkan hasil pada label
+                hasilLabel.setText("Total Pendapatan: " + totalPendapatan);
+            } catch (NumberFormatException ex) {
+                // Menangani jika pengguna memasukkan nilai yang tidak valid
+                hasilLabel.setText("Masukkan nilai yang valid.");
+            }
+        });
+
+        // Membuat layout dan menambahkan elemen-elemen ke dalamnya
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(hargaLabel, hargaField, jumlahLabel, jumlahField, hitungButton, hasilLabel);
+        layout.setPadding(new Insets(10));
+
+        // Menampilkan scene
+        Scene scene = new Scene(layout, 300, 200);
+        primaryStage.setScene(scene);
+
+        // Menampilkan stage
+        primaryStage.show();
+    }
+
+    // Metode untuk menghitung total pendapatan
+    private int hitungTotalPendapatan() {
+        // Menggunakan rumus sederhana: total pendapatan = harga tiket * jumlah tiket terjual
+        return hargaTiket * jumlahTiketTerjual;
+    }
+} 
